@@ -1222,6 +1222,30 @@ static void StringChar(Window *win, int c)
 }
 
 /*
+ * Store OSC 9;4 STATE[;PERCENT] as "STATE;PERCENT", or as empty when
+ * STATE is 0. Returns false and stores nothing on bad input.
+ */
+static bool StoreProgress(Window *win, char *p)
+{
+	int state, percent = 0;
+
+	if (*p < '0' || *p > '4')
+		return false;
+	state = *p++ - '0';
+	if (*p == ';')
+		for (p++; *p >= '0' && *p <= '9'; p++)
+			if ((percent = 10 * percent + (*p - '0')) > 100)
+				return false;
+	if (*p)
+		return false;
+	if (state)
+		snprintf(win->w_progress, ARRAY_SIZE(win->w_progress), "%d;%d", state, percent);
+	else
+		win->w_progress[0] = '\0';
+	return true;
+}
+
+/*
  * Do string processing. Returns -1 if output should be suspended
  * until status is gone.
  */
@@ -1240,6 +1264,14 @@ static int StringEnd(Window *win)
 	*win->w_stringp = '\0';
 	switch (win->w_StringType) {
 	case OSC:		/* special xterm compatibility hack */
+		if (strncmp(win->w_string, "9;4;", 4) == 0) {	/* ConEmu progress */
+			if (!StoreProgress(win, win->w_string + 4))
+				break;
+			for (display = displays; display; display = display->d_next)
+				if (D_forecv->c_layer->l_bottom == &win->w_layer)
+					SetProgress(win->w_progress, t);
+			break;
+		}
 		if (win->w_string[0] == ';' || (p = strchr(win->w_string, ';')) == NULL)
 			break;
 		typ = atoi(win->w_string);

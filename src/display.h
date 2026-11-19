@@ -124,6 +124,7 @@ struct Display {
 					   does not */
 	int   d_bracketed;		/* bracketed paste mode */
 	int   d_cursorstyle;		/* cursor style */
+	bool  d_progress;		/* progress bar shown */
 	int   d_xtermosc[5];		/* osc used */
 	struct mchar d_lpchar;		/* missing char */
 	struct timeval d_status_time;	/* time of status display */
@@ -235,6 +236,7 @@ struct Display {
 #define D_mouse_parse	DISPLAY(d_mouse_parse)
 #define D_extmouse	DISPLAY(d_extmouse)
 #define D_mousetrack	DISPLAY(d_mousetrack)
+#define D_progress	DISPLAY(d_progress)
 #define D_xtermosc	DISPLAY(d_xtermosc)
 #define D_lpchar	DISPLAY(d_lpchar)
 #define D_status	DISPLAY(d_status)
@@ -371,6 +373,7 @@ void  Flush (int);
 void  freetty (void);
 void  Resize_obuf (void);
 void  NukePending (void);
+void  SetProgress (char *, char *);
 void  ClearAllXtermOSC (void);
 void  SetXtermOSC (int, char *, char *);
 void  ResetIdle (void);
