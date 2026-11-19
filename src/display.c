@@ -364,6 +364,7 @@ void FinitTerm(void)
 		AddCStr(D_CCE);
 		if (D_hstatus)
 			ShowHStatus(NULL);
+		SetProgress(NULL, "\a");
 		ClearAllXtermOSC();
 		D_x = D_y = -1;
 		GotoPos(0, D_height - 1);
@@ -955,6 +956,7 @@ void Redisplay(int cur_only)
 	SetFlow(FLOW_ON);
 
 	ClearAll();
+	RefreshProgress();
 	RefreshXtermOSC();
 	if (cur_only > 0 && D_fore)
 		RefreshArea(0, D_fore->w_y, D_width - 1, D_fore->w_y, 1);
@@ -2139,6 +2141,23 @@ void ChangeScrollRegion(int newtop, int newbot)
 	D_top = newtop;
 	D_bot = newbot;
 	D_y = D_x = -1;		/* Just in case... */
+}
+
+/*
+ * Send OSC 9;4 progress. Empty s clears a shown bar.
+ */
+void SetProgress(char *s, char *t)
+{
+	if (!D_CXT)
+		return;
+	if (!s)
+		s = "";
+	if (!D_progress && !*s)
+		return;
+	D_progress = *s != '\0';
+	AddStr("\033]9;4;");
+	AddStr(*s ? s : "0");
+	AddStr(t);
 }
 
 #define WT_FLAG "2"		/* change to "0" to set both title and icon */

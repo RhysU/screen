@@ -24,6 +24,7 @@ char *AddOtherUsers (char *, int, Window *);
 int   WindowByNoN (char *);
 Window *FindNiceWindow (Window *, char *);
 int   CompileKeys (char *, int, unsigned char *);
+void  RefreshProgress (void);
 void  RefreshXtermOSC (void);
 uint64_t ParseAttrColor (char *, int);
 void  ApplyAttrColor (uint64_t, struct mchar *);

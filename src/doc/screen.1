@@ -4648,6 +4648,27 @@ Application Program Command (Hardstatus)
 .BR "ESC ] 0 ; string ^G" "	(A)"
 Operating System Command (Hardstatus, xterm title hack)
 .TP 27
+.BR "ESC ] 9 ; 4 ; \fPPs\fB ^G" "	(A)"
+Progress indicator, kept per window. Sent to the host terminal
+while the window has focus. Bad input is dropped.
+.RS
+.TP 27
+Ps = \fB0\fP
+Clear
+.TP 27
+Ps = \fB1\fP ; Pn
+Normal, Pn percent
+.TP 27
+Ps = \fB2\fP ; Pn
+Error, Pn percent
+.TP 27
+Ps = \fB3\fP
+Indeterminate
+.TP 27
+Ps = \fB4\fP ; Pn
+Warning, Pn percent
+.RE
+.TP 27
 .BR "ESC ] 83 ; cmd ^G" "	(A)"
 Execute screen command. This only works if multi-user support is
 compiled into screen. The pseudo-user \*Q:window:\*U is used to

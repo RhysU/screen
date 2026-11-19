@@ -3355,6 +3355,14 @@ ESC P                   (A)     Device Control String
 ESC _                   (A)     Application Program Command (Hardstatus)
 ESC ] 0 ; string ^G     (A)     Operating System Command (Hardstatus, xterm
                                 title hack)
+ESC ] 9 ; 4 ; Ps ^G     (A)     Progress indicator, kept per window. Sent
+                                to the host terminal while the window has
+                                focus. Bad input is dropped.
+      Ps = 0            (A)     Clear
+           1 ; Pn       (A)     Normal, Pn percent
+           2 ; Pn       (A)     Error, Pn percent
+           3            (A)     Indeterminate
+           4 ; Pn       (A)     Warning, Pn percent
 ESC ] 83 ; cmd ^G       (A)     Execute screen command. This only works if
                                 multi-user support is compiled into screen.
                                 The pseudo-user ":window:" is used to check

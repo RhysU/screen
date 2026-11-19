@@ -7205,6 +7205,7 @@ void SetForeCanvas(Display *d, Canvas *cv)
 		Activate(-1);
 	} else {
 		RefreshHStatus();
+		RefreshProgress();
 		RefreshXtermOSC();
 		flayer = D_forecv->c_layer;
 		CV_CALL(D_forecv, LayRestore();
@@ -7213,6 +7214,13 @@ void SetForeCanvas(Display *d, Canvas *cv)
 	}
 
 	display = odisplay;
+}
+
+void RefreshProgress(void)
+{
+	Window *p = Layer2Window(D_forecv->c_layer);
+
+	SetProgress(p ? p->w_progress : NULL, "\a");
 }
 
 void RefreshXtermOSC(void)
